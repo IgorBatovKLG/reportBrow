@@ -16,7 +16,7 @@ public class DirectionSelectDb {
         ArrayList<String> result = new ArrayList<>();
         try {
             PreparedStatement pstmt;
-            pstmt = connection.prepareStatement("SELECT href from Direction where docStatus != 'Закрыто'");
+            pstmt = connection.prepareStatement("SELECT href from Direction where docStatus != 'Закрыто' and stop !='stop'");
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next())
                 result.add(resultSet.getString(1));
@@ -33,7 +33,7 @@ public class DirectionSelectDb {
         ArrayList<String> result = new ArrayList<>();
         try {
             PreparedStatement pstmt;
-            pstmt = connection.prepareStatement("SELECT href from Direction where docStatus = 'Закрыто'");
+            pstmt = connection.prepareStatement("SELECT href from Direction where docStatus = 'Закрыто' and stop !='stop'");
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next())
                 result.add(resultSet.getString(1));

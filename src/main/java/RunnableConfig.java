@@ -1,6 +1,7 @@
 import BrowserLogic.Authorization;
 import Configuration.ConfigurationBrowser;
 import Direction.DataBase.DirectionSelectDb;
+import Direction.DataBase.DirectionUpdateDb;
 import Direction.Logic.BrowserDirection;
 import Direction.Logic.ErrorDirection;
 import Direction.Models.DirectionCountModel;
@@ -9,8 +10,10 @@ import Signature.HttpLogic.SelectSignatureModel;
 import Signature.Models.SignatureModel;
 import Signature.Models.SignatureModelHttp;
 import Signature.Report.Signature;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.LocalDate;
@@ -47,7 +50,7 @@ public class RunnableConfig {
             ErrorDirection errorDirection = new ErrorDirection();
 
             WebDriver driver = new ChromeDriver();
-            driver.get("http://dbs/eva/1");
+            driver.get("http://dbs/eva/");
             driver.manage().addCookie(new Cookie(Main.strings.get(0), Main.strings.get(2)));
             driver.manage().addCookie(new Cookie(Main.strings.get(1), Main.strings.get(3)));
 
@@ -62,8 +65,56 @@ public class RunnableConfig {
             }
 
             DirectionSelectDb directionSelectDb = new DirectionSelectDb();
-            ArrayList<String> hrefCloset = directionSelectDb.getHrefCloset();
             ArrayList<String> hrefNotCloset = directionSelectDb.getHrefNotCloset();
+            for (String s:hrefNotCloset){
+                driver.get(s);
+                WebElement element = driver.findElement(By.xpath("//*[@id=\"docStatus\"]"));
+                String status = element.getAttribute("innerText");
+                if (status.equals("Закрыто")){
+                    DirectionUpdateDb directionUpdateDb = new DirectionUpdateDb();
+                    directionUpdateDb.updateStatus(status, s);
+                }
+            }
+            ArrayList<String> hrefCloset = directionSelectDb.getHrefCloset();
+            for (String s:hrefCloset) {
+                driver.get(s);
+                DirectionCountModel countSpan = browserDirection.getCountSpan(s, driver);
+                DirectionUpdateDb directionUpdateDb = new DirectionUpdateDb();
+                int errorCode = errorDirection.NotRecordAndMissingExams(countSpan);
+                if (errorCode==0){
+                    directionUpdateDb.updateFullStop(countSpan.getMseRecordsCount(),
+                            countSpan.getMissingMedExamsCount(),
+                            countSpan.getTfomsCount(),
+                            "false",
+                            "false",
+                            "stop",
+                            "false" ,
+                            s
+                            );
+                }
+                if (errorCode==1){
+                    directionUpdateDb.updateFullStop(countSpan.getMseRecordsCount(),
+                            countSpan.getMissingMedExamsCount(),
+                            countSpan.getTfomsCount(),
+                            "true",
+                            "false",
+                            "stop",
+                            "true" ,
+                            s
+                    );
+                }
+                if (errorCode==2){
+                    directionUpdateDb.updateFullStop(countSpan.getMseRecordsCount(),
+                            countSpan.getMissingMedExamsCount(),
+                            countSpan.getTfomsCount(),
+                            "false",
+                            "true",
+                            "stop",
+                            "true" ,
+                            s
+                    );
+                }
+            }
             driver.quit();
         }
     };
