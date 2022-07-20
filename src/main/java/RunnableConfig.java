@@ -47,7 +47,7 @@ public class RunnableConfig {
             ErrorDirection errorDirection = new ErrorDirection();
 
             WebDriver driver = new ChromeDriver();
-            driver.get("http://dbs/eva/");
+            driver.get("http://dbs/eva/1");
             driver.manage().addCookie(new Cookie(Main.strings.get(0), Main.strings.get(2)));
             driver.manage().addCookie(new Cookie(Main.strings.get(1), Main.strings.get(3)));
 
