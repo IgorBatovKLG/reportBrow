@@ -14,19 +14,29 @@ public class DirectionInsertDB {
                                       String info,
                                       String dateStart,
                                       String dateAnd,
-                                      String docStatus){
+                                      String docStatus,
+                                      String dayReg,
+                                      String dayRecord){
         Connection connection = DBConnection.connection;
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO Direction VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
             statement.setString(2, href);
             statement.setString(3, hashRemd);
             statement.setString(4, info);
+            statement.setString(5, "null");
+            statement.setString(6, "null");
+            statement.setString(7, "null");
+            statement.setString(8, "null");
+            statement.setString(9, "null");
             statement.setString(10, dateStart);
             statement.setString(11, dateAnd);
+            statement.setString(12, "null");
             statement.setString(13, docStatus);
             statement.setString(14, "false");
-            statement.setString(17, "null");
+            statement.setString(15, "null");
+            statement.setString(16, "null");
+            statement.setString(17, dayReg);
             statement.setString(18, "null");
-            statement.setString(19, "null");
+            statement.setString(19, dayRecord);
 
             statement.executeUpdate();
         } catch (SQLException throwables) {

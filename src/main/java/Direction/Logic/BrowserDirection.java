@@ -25,11 +25,10 @@ public class BrowserDirection {
         driver.manage().addCookie(new Cookie(cookies.get(0), cookies.get(2)));
         driver.manage().addCookie(new Cookie(cookies.get(1), cookies.get(3)));
 
-        driver.get("http://dbs/eva/Requests/ReqList?NeedSearch=True&CreateTimeFrom=18.07.2022&CreateTimeTo=18.07.2022&ReqType=5&PageSize=1000&BrokenDeadlines=false&IsNoRecordsMSE=false");
+        driver.get("http://dbs/eva/Requests/ReqList?NeedSearch=True&CreateTimeFrom="+date+"&CreateTimeTo="+date+"&PageSize=1000&BrokenDeadlines=false&IsNoRecordsMSE=false&ReqType=5");
 
         element = driver.findElement(By.xpath("//*[@id=\"table-container\"]/table/tbody"));
         int countElement = Integer.parseInt(element.getAttribute("childElementCount"));
-
         for (int i = 1; i <= countElement; i++){
             element = driver.findElement(By.xpath("//*[@id=\"table-container\"]/table/tbody/tr["+i+"]/td[1]/a"));
             String href = element.getAttribute("href");
@@ -60,8 +59,8 @@ public class BrowserDirection {
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         driver.get(href);
         WebElement element;
-        String dStart = "";
-        String dAnd = "";
+        String dStart = "null";
+        String dAnd = "null";
         element = driver.findElement(By.xpath("//*[@id=\"dtCreateDate\"]"));
         String dateStart = element.getAttribute("value");
 
@@ -87,6 +86,9 @@ public class BrowserDirection {
         if (dateAnd.length()>2) {
             dAnd = LocalDate.parse(dateAnd, formatter1).format(formatter).toString();
         }
+        Calendar calendar = new Calendar();
+        String reg = calendar.maxDayReg(dStart, 2);
+        String record = calendar.maxDayReg(dStart, 3);
         DirectionInsertDB directionInsertDB = new DirectionInsertDB();
         boolean db = true;
         while (db){
@@ -95,7 +97,9 @@ public class BrowserDirection {
                     info,
                     dStart,
                     dAnd,
-                    status);
+                    status,
+                    reg,
+                    record);
         }
     }
 }
