@@ -32,7 +32,6 @@ public class DirectionUpdateDb {
                                   String errorRAndM,
                                   String errorRemd,
                                   String stop,
-                                  String error,
                                   String href,
                                   String number) {
         Connection connection = DBConnection.connection;
@@ -42,7 +41,6 @@ public class DirectionUpdateDb {
                 " , errorRAndM = (?)" +
                 " , errorRemd = (?)" +
                 " , stop = (?)" +
-                " , error = (?)" +
                 " , number = (?)" +
                 " WHERE href = (?)")) {
             statement.setInt(1, countRecord);
@@ -51,9 +49,8 @@ public class DirectionUpdateDb {
             statement.setString(4, errorRAndM);
             statement.setString(5, errorRemd);
             statement.setString(6, stop);
-            statement.setString(7, error);
-            statement.setString(8, number);
-            statement.setString(9, href);
+            statement.setString(7, number);
+            statement.setString(8, href);
             statement.executeUpdate();
             System.out.println(statement.getUpdateCount());
         } catch (SQLException e) {

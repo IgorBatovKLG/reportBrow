@@ -16,7 +16,7 @@ public class DirectionInsertDB {
                                       String dateAnd,
                                       String docStatus){
         Connection connection = DBConnection.connection;
-        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO Direction VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO Direction VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
             statement.setString(2, href);
             statement.setString(3, hashRemd);
             statement.setString(4, info);
@@ -24,6 +24,9 @@ public class DirectionInsertDB {
             statement.setString(11, dateAnd);
             statement.setString(13, docStatus);
             statement.setString(14, "false");
+            statement.setString(17, "null");
+            statement.setString(18, "null");
+            statement.setString(19, "null");
 
             statement.executeUpdate();
         } catch (SQLException throwables) {

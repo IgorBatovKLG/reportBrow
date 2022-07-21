@@ -90,7 +90,6 @@ public class RunnableConfig {
                             "false",
                             "false",
                             "true",
-                            "false" ,
                             s,
                             countSpan.getNumber()
                             );
@@ -102,7 +101,6 @@ public class RunnableConfig {
                             "true",
                             "false",
                             "true",
-                            "true" ,
                             s,
                             countSpan.getNumber()
                     );
@@ -114,7 +112,6 @@ public class RunnableConfig {
                             "false",
                             "true",
                             "true",
-                            "true" ,
                             s,
                             countSpan.getNumber()
                     );
