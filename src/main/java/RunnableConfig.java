@@ -56,6 +56,9 @@ public class RunnableConfig {
 
             /**
              * Инициализация направлений в бд
+             *
+             *
+             * Добавить проверку на уже наличие в бд
              */
             ArrayList<String> directionList = browserDirection.getDirectionList(Main.strings, LocalDate.now().minusDays(1).format(formatter1).toString());
             try {
@@ -67,7 +70,7 @@ public class RunnableConfig {
                 browserDirection.DirectionInit(s, driver);
             }
 
-             /**
+            /**
              * Проверяем не закрытые и если закрытые закрываем
              */
             DirectionSelectDb directionSelectDb = new DirectionSelectDb();
@@ -78,7 +81,10 @@ public class RunnableConfig {
                 String status = element.getAttribute("innerText");
                 if (status.equals("Закрыто")){
                     DirectionUpdateDb directionUpdateDb = new DirectionUpdateDb();
-                    directionUpdateDb.updateStatus(status, s);
+                    boolean b = true;
+                    while (b) {
+                        b = directionUpdateDb.updateStatus(status, s);
+                    }
                 }
             }
 
@@ -113,45 +119,66 @@ public class RunnableConfig {
                 int errorCode = errorDirection.NotRecordAndMissingExams(countSpan);
                 System.out.println(countSpan.toString() + "///" + s + "///error code " + errorCode );
                 if (errorCode==0){
-                    directionUpdateDb.updateFullStop(countSpan.getMseRecordsCount(),
-                            countSpan.getMissingMedExamsCount(),
-                            countSpan.getTfomsCount(),
-                            "false",
-                            "false",
-                            "true",
-                            s,
-                            countSpan.getNumber()
-                            );
+                    boolean b = true;
+                    while (b) {
+                        b = directionUpdateDb.updateFullStop(countSpan.getMseRecordsCount(),
+                                countSpan.getMissingMedExamsCount(),
+                                countSpan.getTfomsCount(),
+                                "false",
+                                "false",
+                                "true",
+                                s,
+                                countSpan.getNumber()
+                        );
+                    }
                 }
                 if (errorCode==1){
-                    directionUpdateDb.updateFullStop(countSpan.getMseRecordsCount(),
-                            countSpan.getMissingMedExamsCount(),
-                            countSpan.getTfomsCount(),
-                            "true",
-                            "false",
-                            "true",
-                            s,
-                            countSpan.getNumber()
-                    );
+                    boolean b = true;
+                    boolean c = true;
+                    while (b) {
+                        b = directionUpdateDb.updateFullStop(countSpan.getMseRecordsCount(),
+                                countSpan.getMissingMedExamsCount(),
+                                countSpan.getTfomsCount(),
+                                "true",
+                                "false",
+                                "true",
+                                s,
+                                countSpan.getNumber()
+                        );
+                    }
+                    while (c) {
+                        c = directionUpdateDb.updateError(s);
+                    }
                 }
-                if (errorCode==2){
-                    directionUpdateDb.updateFullStop(countSpan.getMseRecordsCount(),
-                            countSpan.getMissingMedExamsCount(),
-                            countSpan.getTfomsCount(),
-                            "false",
-                            "true",
-                            "true",
-                            s,
-                            countSpan.getNumber()
-                    );
+
+                if (errorCode==2) {
+                    boolean b = true;
+                    boolean c = true;
+                    while (b) {
+                        b = directionUpdateDb.updateFullStop(countSpan.getMseRecordsCount(),
+                                countSpan.getMissingMedExamsCount(),
+                                countSpan.getTfomsCount(),
+                                "false",
+                                "true",
+                                "true",
+                                s,
+                                countSpan.getNumber()
+                        );
+                    }
+                    while (c) {
+                        c = directionUpdateDb.updateError(s);
+                    }
                 }
+
             }
 
             /**
              * Устанавливаем дату закрытия/регистрации
              * И максимальные даты на обслуживание направления!
              */
+
             driver.quit();
         }
+
     };
 }

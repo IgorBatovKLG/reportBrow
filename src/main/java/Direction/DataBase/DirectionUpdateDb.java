@@ -85,6 +85,23 @@ public class DirectionUpdateDb {
         return false;
     }
 
+    public boolean updateError(String href) {
+        Connection connection = DBConnection.connection;
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE Direction SET error = 'true' WHERE href = (?)")) {
+            statement.setString(1, href);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+            return true;
+        }
+        return false;
+    }
+
 
 
 
