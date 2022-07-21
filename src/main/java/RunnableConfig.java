@@ -79,17 +79,20 @@ public class RunnableConfig {
             for (String s:hrefCloset) {
                 driver.get(s);
                 DirectionCountModel countSpan = browserDirection.getCountSpan(s, driver);
+
                 DirectionUpdateDb directionUpdateDb = new DirectionUpdateDb();
                 int errorCode = errorDirection.NotRecordAndMissingExams(countSpan);
+                System.out.println(countSpan.toString() + "///" + s + "///error code " + errorCode );
                 if (errorCode==0){
                     directionUpdateDb.updateFullStop(countSpan.getMseRecordsCount(),
                             countSpan.getMissingMedExamsCount(),
                             countSpan.getTfomsCount(),
                             "false",
                             "false",
-                            "stop",
+                            "true",
                             "false" ,
-                            s
+                            s,
+                            countSpan.getNumber()
                             );
                 }
                 if (errorCode==1){
@@ -98,9 +101,10 @@ public class RunnableConfig {
                             countSpan.getTfomsCount(),
                             "true",
                             "false",
-                            "stop",
+                            "true",
                             "true" ,
-                            s
+                            s,
+                            countSpan.getNumber()
                     );
                 }
                 if (errorCode==2){
@@ -109,9 +113,10 @@ public class RunnableConfig {
                             countSpan.getTfomsCount(),
                             "false",
                             "true",
-                            "stop",
+                            "true",
                             "true" ,
-                            s
+                            s,
+                            countSpan.getNumber()
                     );
                 }
             }

@@ -15,6 +15,12 @@ public class DirectionUpdateDb {
             statement.setString(2, href);
             statement.executeUpdate();
         } catch (SQLException e) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
             return true;
         }
         return false;
@@ -27,15 +33,17 @@ public class DirectionUpdateDb {
                                   String errorRemd,
                                   String stop,
                                   String error,
-                                  String href) {
+                                  String href,
+                                  String number) {
         Connection connection = DBConnection.connection;
         try (PreparedStatement statement = connection.prepareStatement("UPDATE Direction SET countRecord = (?)" +
-                " and countMisEx = (?)" +
-                " and countRemd = (?)" +
-                " and errorRAndM = (?)" +
-                " and errorRemd = (?)" +
-                " and stop = (?)" +
-                " and error = (?)" +
+                " , countMisEx = (?)" +
+                " , countRemd = (?)" +
+                " , errorRAndM = (?)" +
+                " , errorRemd = (?)" +
+                " , stop = (?)" +
+                " , error = (?)" +
+                " , number = (?)" +
                 " WHERE href = (?)")) {
             statement.setInt(1, countRecord);
             statement.setInt(2, countMisEx);
@@ -44,9 +52,17 @@ public class DirectionUpdateDb {
             statement.setString(5, errorRemd);
             statement.setString(6, stop);
             statement.setString(7, error);
-            statement.setString(8, href);
+            statement.setString(8, number);
+            statement.setString(9, href);
             statement.executeUpdate();
+            System.out.println(statement.getUpdateCount());
         } catch (SQLException e) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
             return true;
         }
         return false;

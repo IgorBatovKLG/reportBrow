@@ -14,20 +14,25 @@ public class DirectionInsertDB {
                                       String info,
                                       String dateStart,
                                       String dateAnd,
-                                      String docStatus,
-                                      String number){
+                                      String docStatus){
         Connection connection = DBConnection.connection;
-        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO Direction VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO Direction VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
             statement.setString(2, href);
             statement.setString(3, hashRemd);
             statement.setString(4, info);
             statement.setString(10, dateStart);
             statement.setString(11, dateAnd);
             statement.setString(13, docStatus);
-            statement.setString(15, number);
+            statement.setString(14, "false");
 
             statement.executeUpdate();
         } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
             return true;
         }
         return false;

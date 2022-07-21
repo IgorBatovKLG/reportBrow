@@ -49,8 +49,11 @@ public class BrowserDirection {
         String MissingMedExamsCount = element.getAttribute("innerText");
         element = driver.findElement(By.xpath("//*[@id=\"spanTfomsCount\"]"));
         String TfomsCount = element.getAttribute("innerText");
-        return new DirectionCountModel(Integer.parseInt(MseRecordsCount),Integer.parseInt(MissingMedExamsCount),Integer.parseInt(TfomsCount));
-    }
+        element = driver.findElement(By.xpath("//*[@id=\"txtInNumber\"]"));
+        String number = element.getAttribute("value");
+        DirectionCountModel directionCountModel = new DirectionCountModel(Integer.parseInt(MseRecordsCount), Integer.parseInt(MissingMedExamsCount), Integer.parseInt(TfomsCount), number);
+        return directionCountModel;
+        }
 
     public void DirectionInit(String href, WebDriver driver){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -75,8 +78,7 @@ public class BrowserDirection {
         element = driver.findElement(By.xpath("//*[@id=\"docStatus\"]"));
         String status = element.getAttribute("innerText");
 
-        element = driver.findElement(By.xpath("//*[@id=\"txtInNumber\"]"));
-        String number = element.getAttribute("value");
+
 
 
         if (dateStart.length()>2) {
@@ -93,8 +95,7 @@ public class BrowserDirection {
                     info,
                     dStart,
                     dAnd,
-                    status,
-                    number);
+                    status);
         }
     }
 }
