@@ -54,7 +54,10 @@ public class RunnableConfig {
             driver.manage().addCookie(new Cookie(Main.strings.get(0), Main.strings.get(2)));
             driver.manage().addCookie(new Cookie(Main.strings.get(1), Main.strings.get(3)));
 
-            ArrayList<String> directionList = browserDirection.getDirectionList(Main.strings, LocalDate.now().minusDays(2).format(formatter).toString());
+            /**
+             * Инициализация направлений в бд
+             */
+            ArrayList<String> directionList = browserDirection.getDirectionList(Main.strings, LocalDate.now().minusDays(1).format(formatter1).toString());
             try {
                 Thread.sleep(1000*15);
             } catch (InterruptedException e) {
@@ -64,6 +67,9 @@ public class RunnableConfig {
                 browserDirection.DirectionInit(s, driver);
             }
 
+             /**
+             * Проверяем не закрытые и если закрытые закрываем
+             */
             DirectionSelectDb directionSelectDb = new DirectionSelectDb();
             ArrayList<String> hrefNotCloset = directionSelectDb.getHrefNotCloset();
             for (String s:hrefNotCloset){
@@ -75,6 +81,29 @@ public class RunnableConfig {
                     directionUpdateDb.updateStatus(status, s);
                 }
             }
+
+
+            /**
+             * Дата закрытыя дела
+             */
+            ArrayList<String> hrefNotDayReg = directionSelectDb.getHrefNotDayReg();
+            for (String s:hrefNotDayReg) {
+                DirectionUpdateDb directionUpdateDb = new DirectionUpdateDb();
+                boolean errorSql = true;
+                while (errorSql){
+                    errorSql = directionUpdateDb.updateDayReg(s);
+                }
+
+            }
+
+
+            /**
+             * Загружаем закрытые
+             * смотрим записи и проверяем на ошибка
+             * указывем рег номер если есть
+             *
+             */
+
             ArrayList<String> hrefCloset = directionSelectDb.getHrefCloset();
             for (String s:hrefCloset) {
                 driver.get(s);
@@ -117,6 +146,11 @@ public class RunnableConfig {
                     );
                 }
             }
+
+            /**
+             * Устанавливаем дату закрытия/регистрации
+             * И максимальные даты на обслуживание направления!
+             */
             driver.quit();
         }
     };
