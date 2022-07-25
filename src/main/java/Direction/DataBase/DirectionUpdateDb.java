@@ -104,7 +104,7 @@ public class DirectionUpdateDb {
 
     public boolean daysReg(String href, String days) {
         Connection connection = DBConnection.connection;
-        try (PreparedStatement statement = connection.prepareStatement("UPDATE Direction SET dayRegCal = (?) WHERE href = (?)")) {
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE Direction SET daysRegCal = (?) WHERE href = (?)")) {
             statement.setString(2, href);
             statement.setString(1, days);
             statement.executeUpdate();
@@ -122,7 +122,7 @@ public class DirectionUpdateDb {
 
     public boolean daysRecord(String href, String days) {
         Connection connection = DBConnection.connection;
-        try (PreparedStatement statement = connection.prepareStatement("UPDATE Direction SET dayRecordCal = (?) WHERE href = (?)")) {
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE Direction SET daysRecordCal = (?) WHERE href = (?)")) {
             statement.setString(2, href);
             statement.setString(1, days);
             statement.executeUpdate();
