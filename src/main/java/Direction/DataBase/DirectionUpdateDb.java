@@ -102,6 +102,42 @@ public class DirectionUpdateDb {
         return false;
     }
 
+    public boolean daysReg(String href, String days) {
+        Connection connection = DBConnection.connection;
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE Direction SET dayRegCal = (?) WHERE href = (?)")) {
+            statement.setString(2, href);
+            statement.setString(1, days);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean daysRecord(String href, String days) {
+        Connection connection = DBConnection.connection;
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE Direction SET dayRecordCal = (?) WHERE href = (?)")) {
+            statement.setString(2, href);
+            statement.setString(1, days);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+            return true;
+        }
+        return false;
+    }
+
 
 
 

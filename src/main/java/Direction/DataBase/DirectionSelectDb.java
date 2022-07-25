@@ -93,7 +93,7 @@ public class DirectionSelectDb {
         ArrayList<DirectionErrorModel> result = new ArrayList<>();
         try {
             PreparedStatement pstmt;
-            pstmt = connection.prepareStatement("select dayReg,dateAnd,dayRecord,maxDayReg,maxDayRecord,docStatus,number FROM Direction where dayRecord = 'null'");
+            pstmt = connection.prepareStatement("select dateStart, dayReg, dateAnd, dayRecord, maxDayReg, maxDayRecord, docStatus, number, href FROM Direction where dayRecord !='null' and daysRecordCal = 'null'");
             ResultSet resultSet = pstmt.executeQuery();
             while (resultSet.next())
                 result.add(new DirectionErrorModel(
@@ -103,7 +103,36 @@ public class DirectionSelectDb {
                         resultSet.getString(4),
                         resultSet.getString(5),
                         resultSet.getString(6),
-                        resultSet.getString(7)
+                        resultSet.getString(7),
+                        resultSet.getString(8),
+                        resultSet.getString(9)
+                ));
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return result;
+        }
+        return result;
+    }
+
+    public ArrayList<DirectionErrorModel> getFinalErrorReg(){
+        Connection connection = DBConnection.connection;
+        ArrayList<DirectionErrorModel> result = new ArrayList<>();
+        try {
+            PreparedStatement pstmt;
+            pstmt = connection.prepareStatement("select dateStart, dayReg, dateAnd, dayRecord, maxDayReg, maxDayRecord, docStatus, number, href FROM Direction where daysRegCal = 'null'");
+            ResultSet resultSet = pstmt.executeQuery();
+            while (resultSet.next())
+                result.add(new DirectionErrorModel(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getString(8),
+                        resultSet.getString(9)
                 ));
             pstmt.close();
         } catch (SQLException e) {

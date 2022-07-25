@@ -21,7 +21,7 @@ public class DirectionInsertDB {
         Connection connection = DBConnection.connection;
         int countHref = getCountHref(href);
         if (countHref==0) {
-            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO Direction VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO Direction VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
                 statement.setString(2, href);
                 statement.setString(3, hashRemd);
                 statement.setString(4, info);
@@ -42,6 +42,7 @@ public class DirectionInsertDB {
                 statement.setString(19, dayRecord);
                 statement.setString(20, "null");
                 statement.setString(21, "null");
+                statement.setString(22, "null");
 
                 statement.executeUpdate();
             } catch (SQLException throwables) {

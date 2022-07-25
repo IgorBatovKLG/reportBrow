@@ -3,8 +3,10 @@ import Configuration.ConfigurationBrowser;
 import Direction.DataBase.DirectionSelectDb;
 import Direction.DataBase.DirectionUpdateDb;
 import Direction.Logic.BrowserDirection;
+import Direction.Logic.Calendar;
 import Direction.Logic.ErrorDirection;
 import Direction.Models.DirectionCountModel;
+import Direction.Models.DirectionErrorModel;
 import Signature.DTO.SignatureDTO;
 import Signature.HttpLogic.SelectSignatureModel;
 import Signature.Models.SignatureModel;
@@ -60,9 +62,9 @@ public class RunnableConfig {
              *
              * Добавить проверку на уже наличие в бд
              */
-            ArrayList<String> directionList = browserDirection.getDirectionList(Main.strings, LocalDate.now().minusDays(1).format(formatter1).toString());
+            ArrayList<String> directionList = browserDirection.getDirectionList(Main.strings, LocalDate.now().minusDays(2).format(formatter1).toString());
             try {
-                Thread.sleep(1000*15);
+                Thread.sleep(1000*5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -172,11 +174,15 @@ public class RunnableConfig {
 
             }
 
-            /**
-             * Устанавливаем дату закрытия/регистрации
-             * И максимальные даты на обслуживание направления!
-             */
-
+            ArrayList<DirectionErrorModel> finalErrorReg = directionSelectDb.getFinalErrorReg();
+            Calendar calendar = new Calendar();
+            for (DirectionErrorModel f:finalErrorReg){
+                calendar.CalDayReg(f);
+            }
+            ArrayList<DirectionErrorModel> finalErrorRecord = directionSelectDb.getFinalErrorRecord();
+            for (DirectionErrorModel f:finalErrorRecord){
+                calendar.CalDayRecord(f);
+            }
             driver.quit();
         }
 
